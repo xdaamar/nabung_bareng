@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 const SESSION_KEY = 'couple-room'
 
@@ -33,4 +34,14 @@ export async function getSessionRoomId() {
 export async function clearSession() {
   const cookieStore = await cookies()
   cookieStore.delete(SESSION_KEY)
+}
+
+export async function requireSession() {
+  const roomId = await getSessionRoomId()
+
+  if (!roomId) {
+    redirect('/login')
+  }
+
+  return roomId
 }

@@ -67,5 +67,15 @@ export async function initDB() {
     CREATE INDEX IF NOT EXISTS idx_loans_room_status
     ON loans(room_id, status)
     `,
+
+    `
+    CREATE INDEX IF NOT EXISTS idx_rooms_room_code
+    ON rooms(room_code)
+    `,
+
+    `
+    CREATE INDEX IF NOT EXISTS idx_transactions_room_type
+    ON transactions(room_id, type)
+    `,
   ])
 }

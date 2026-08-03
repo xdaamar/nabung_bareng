@@ -5,3 +5,12 @@ export function formatRupiah(amount: number) {
     maximumFractionDigits: 0,
   }).format(amount)
 }
+
+export function formatDate(date: string) {
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(date))
+}

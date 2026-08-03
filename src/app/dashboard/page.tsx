@@ -2,47 +2,24 @@ import { redirect } from 'next/navigation'
 import { AppHeader } from '@/components/layout/app-header'
 import { MobileContainer } from '@/components/layout/mobile-container'
 import { AddSavingForm } from '@/components/forms/add-saving-form'
-import { getSessionRoomId } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { getRoomBalance } from '@/lib/balance'
-import { formatRupiah } from '@/lib/format'
+import { requireSession } from '@/lib/auth'
+import { getDashboardData } from '@/lib/dashboard'
+import { formatRupiah, formatDate } from '@/lib/format'
 
 export default async function DashboardPage() {
-  const roomId = await getSessionRoomId()
+  const roomId = await requireSession()
 
-  if (!roomId) {
-    redirect('/login')
-  }
-
-  const roomResult = await db.execute({
-    sql: 'SELECT * FROM rooms WHERE id = ?',
-    args: [roomId],
-  })
-
-  const room = roomResult.rows[0]
+  const { room, transactions, balance } = await getDashboardData(roomId)
 
   if (!room) {
     redirect('/login')
   }
 
-  const balance = await getRoomBalance(roomId)
-
-  const transactions = await db.execute({
-    sql: `
-      SELECT person, amount, note, created_at
-      FROM transactions
-      WHERE room_id = ?
-      ORDER BY created_at DESC
-      LIMIT 5
-    `,
-    args: [roomId],
-  })
-
   return (
     <MobileContainer>
       <AppHeader
         title="Tabungan Kita 💗"
-        subtitle={`${room.person_one} 💕 ${room.person_two}`}
+        subtitle={`${String(room.person_one)} 💕 ${String(room.person_two)}`}
       />
 
       <div className="space-y-5 p-5">
@@ -78,17 +55,17 @@ export default async function DashboardPage() {
               Riwayat Terbaru
             </h3>
             <span className="text-xs text-pink-500">
-              {transactions.rows.length} transaksi
+              {transactions.length} transaksi
             </span>
           </div>
 
           <div className="space-y-3">
-            {transactions.rows.length === 0 ? (
+            {transactions.length === 0 ? (
               <div className="rounded-xl bg-pink-50 p-4 text-center text-sm text-gray-500">
                 Transaksi pertama kalian akan muncul di sini 💕
               </div>
             ) : (
-              transactions.rows.map((transaction, index) => (
+              transactions.map((transaction, index) => (
                 <div
                   key={`${transaction.created_at}-${index}`}
                   className="flex items-start justify-between rounded-xl border border-pink-50 bg-pink-50/40 p-3"
@@ -103,6 +80,10 @@ export default async function DashboardPage() {
                         {String(transaction.note)}
                       </p>
                     )}
+
+                    <p className="mt-1 text-[11px] text-gray-400">
+                      {formatDate(String(transaction.created_at))}
+                    </p>
                   </div>
 
                   <p className="ml-3 text-sm font-semibold text-pink-600">
@@ -113,6 +94,13 @@ export default async function DashboardPage() {
             )}
           </div>
         </div>
+
+        <a
+          href="/api/logout"
+          className="block w-full rounded-2xl border border-pink-100 bg-white p-4 text-center text-sm font-medium text-gray-600"
+        >
+          Keluar 👋
+        </a>
       </div>
     </MobileContainer>
   )

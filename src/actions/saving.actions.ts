@@ -15,8 +15,16 @@ export async function addSavingAction(formData: FormData) {
   const amount = Number(formData.get('amount'))
   const note = formData.get('note')?.toString() ?? ''
 
-  if (!person || !amount || amount <= 0) {
-    throw new Error('Data tabungan tidak valid')
+  if (!person) {
+    throw new Error('Penabung wajib dipilih')
+  }
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    throw new Error('Nominal tabungan tidak valid')
+  }
+
+  if (amount > 1_000_000_000) {
+    throw new Error('Nominal terlalu besar')
   }
 
   await db.execute({
