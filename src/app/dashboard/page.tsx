@@ -72,6 +72,7 @@ export default async function DashboardPage() {
 
         <TransactionList
           transactions={transactions.map((transaction) => ({
+            type: String(transaction.type || 'deposit'),
             person: String(transaction.person),
             amount: Number(transaction.amount),
             note: transaction.note ? String(transaction.note) : null,

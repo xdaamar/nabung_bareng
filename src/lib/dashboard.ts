@@ -14,7 +14,7 @@ export async function getDashboardData(roomId: number) {
 
     db.execute({
       sql: `
-        SELECT id, person, amount, note, created_at
+        SELECT id, type, person, amount, note, created_at
         FROM transactions
         WHERE room_id = ?
         ORDER BY created_at DESC
