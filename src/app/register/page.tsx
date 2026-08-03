@@ -16,7 +16,7 @@ export default function RegisterPage() {
           <img
             src="https://media1.tenor.com/m/XJ4sqEoJSS8AAAAC/love-in-love.gif"
             alt="Couple register animation"
-            className="h-28 w-auto object-contain"
+            className="h-35 w-auto object-contain"
           />
         </div>
 
