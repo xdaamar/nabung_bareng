@@ -29,7 +29,7 @@ export default function RegisterPage() {
         <input
           name="roomCode"
           required
-          placeholder="Kode unik (contoh: DAMAR-LUV)"
+          placeholder="Kode unik (contoh: NAMA-XXX)"
           className="h-12 w-full rounded-2xl border border-pink-100 bg-pink-50/60 px-4 outline-none focus:border-pink-300 focus:bg-white"
         />
 

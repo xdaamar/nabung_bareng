@@ -1,15 +1,29 @@
-import { addSavingAction } from '@/actions/saving.actions'
-import { PrimaryButton } from '@/components/ui/primary-button'
+'use client'
 
-type AddSavingFormProps = {
-  personOne: string
-  personTwo: string
+import { useFormStatus } from 'react-dom'
+import { addSavingAction } from '@/actions/saving.actions'
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="h-12 w-full rounded-2xl bg-pink-500 px-4 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
+    >
+      {pending ? 'Menyimpan...' : 'Tambah Tabungan 💰'}
+    </button>
+  )
 }
 
 export function AddSavingForm({
   personOne,
   personTwo,
-}: AddSavingFormProps) {
+}: {
+  personOne: string
+  personTwo: string
+}) {
   return (
     <form action={addSavingAction} className="space-y-3">
       <select
@@ -37,7 +51,7 @@ export function AddSavingForm({
         className="w-full rounded-2xl border border-pink-100 bg-pink-50/60 px-4 py-3 outline-none focus:border-pink-300 focus:bg-white"
       />
 
-      <PrimaryButton type="submit">Tambah Tabungan 💰</PrimaryButton>
+      <SubmitButton />
     </form>
   )
 }

@@ -13,6 +13,14 @@ export default function LoginPage() {
       />
 
       <form action={loginAction} className="space-y-5 p-5">
+        <div className="overflow-hidden rounded-2xl border border-pink-100 shadow-sm">
+          <img
+            src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGQzc2dubTBxanA1czh4ZnU4dDRkejB0ejVsaGllbnFteDd5amx6NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l4Ki4biBSwhjyrS48/giphy.gif"
+            alt="Couple login animation"
+            className="h-48 w-full object-cover"
+          />
+        </div>
+
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">
             Kode Tabungan
@@ -20,7 +28,7 @@ export default function LoginPage() {
           <input
             name="roomCode"
             required
-            placeholder="Contoh: DAMAR-LUV"
+            placeholder="Contoh: NAMA-XXX"
             className="h-12 w-full rounded-2xl border border-pink-100 bg-pink-50/60 px-4 outline-none focus:border-pink-300 focus:bg-white"
           />
         </div>
