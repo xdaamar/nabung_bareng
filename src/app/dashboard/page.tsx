@@ -33,11 +33,19 @@ export default async function DashboardPage() {
   const roomId = await requireSession()
   const { room, transactions, balance } = await getDashboardData(roomId)
 
+  const initialRecentAmounts = Array.from(
+    new Set(
+      transactions
+        .map((t) => Number(t.amount))
+        .filter((val) => Number.isFinite(val) && val > 0),
+    ),
+  ).slice(0, 2)
+
   return (
     <MobileContainer>
       <AppHeader
-        title="Tabungan Kita 💗"
-        subtitle={`${String(room.person_one)} 💕 ${String(room.person_two)}`}
+        title="Tabungan Kita "
+        subtitle={`${String(room.person_one)} 🤍 ${String(room.person_two)}`}
       />
 
       <div className="space-y-5 p-5">
@@ -56,6 +64,7 @@ export default async function DashboardPage() {
           <AddSavingForm
             personOne={String(room.person_one)}
             personTwo={String(room.person_two)}
+            initialRecentAmounts={initialRecentAmounts}
           />
         </div>
 

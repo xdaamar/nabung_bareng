@@ -12,7 +12,9 @@ export async function addSavingAction(formData: FormData) {
   }
 
   const person = formData.get('person')?.toString() ?? ''
-  const amount = Number(formData.get('amount'))
+  const rawAmount =
+    formData.get('amount')?.toString().replace(/\./g, '').replace(/,/g, '') ?? ''
+  const amount = Number(rawAmount)
   const note = formData.get('note')?.toString() ?? ''
 
   if (!person) {

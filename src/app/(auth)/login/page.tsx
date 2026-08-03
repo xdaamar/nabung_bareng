@@ -15,7 +15,7 @@ export default function LoginPage() {
       <form action={loginAction} className="space-y-5 p-5">
         <div className="overflow-hidden rounded-2xl border border-pink-100 shadow-sm">
           <img
-            src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGQzc2dubTBxanA1czh4ZnU4dDRkejB0ejVsaGllbnFteDd5amx6NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l4Ki4biBSwhjyrS48/giphy.gif"
+            src="https://media1.tenor.com/m/XJ4sqEoJSS8AAAAC/love-in-love.gif"
             alt="Couple login animation"
             className="h-48 w-full object-cover"
           />

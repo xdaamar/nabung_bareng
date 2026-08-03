@@ -12,6 +12,14 @@ export default function RegisterPage() {
       />
 
       <form action={createRoomAction} className="space-y-4 p-5">
+        <div className="overflow-hidden rounded-2xl border border-pink-100 shadow-sm">
+          <img
+            src="https://media1.tenor.com/m/XJ4sqEoJSS8AAAAC/love-in-love.gif"
+            alt="Couple register animation"
+            className="h-48 w-full object-cover"
+          />
+        </div>
+
         <input
           name="personOne"
           required
