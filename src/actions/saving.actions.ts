@@ -2,14 +2,10 @@
 
 import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
-import { getSessionRoomId } from '@/lib/auth'
+import { requireSession } from '@/lib/auth'
 
 export async function addSavingAction(formData: FormData) {
-  const roomId = await getSessionRoomId()
-
-  if (!roomId) {
-    throw new Error('Session tidak ditemukan')
-  }
+  const roomId = await requireSession()
 
   const person = formData.get('person')?.toString() ?? ''
   const rawAmount =

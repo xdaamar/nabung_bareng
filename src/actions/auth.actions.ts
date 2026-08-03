@@ -43,7 +43,7 @@ export async function loginAction(formData: FormData) {
   const pin = formData.get('pin')?.toString().trim() ?? ''
 
   const result = await db.execute({
-    sql: 'SELECT * FROM rooms WHERE room_code = ?',
+    sql: 'SELECT id, pin_hash FROM rooms WHERE room_code = ?',
     args: [roomCode],
   })
 

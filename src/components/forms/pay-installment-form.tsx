@@ -3,18 +3,23 @@
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { payInstallmentAction } from '@/actions/installment.actions'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="h-12 w-full rounded-2xl bg-pink-500 px-4 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
-    >
-      {pending ? 'Menyimpan...' : 'Bayar Cicilan 💖'}
-    </button>
+    <>
+      {pending && <LoadingOverlay text="Membayar cicilan 💖" />}
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="h-12 w-full rounded-2xl bg-pink-500 px-4 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
+      >
+        {pending ? 'Menyimpan...' : 'Bayar Cicilan 💖'}
+      </button>
+    </>
   )
 }
 

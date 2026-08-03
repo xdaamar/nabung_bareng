@@ -10,7 +10,7 @@ export default async function CicilanPage() {
 
   const loansResult = await db.execute({
     sql: `
-      SELECT *
+      SELECT id, borrower, purpose, remaining_amount
       FROM loans
       WHERE room_id = ? AND status = 'active'
       ORDER BY created_at ASC

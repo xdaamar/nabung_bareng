@@ -8,22 +8,23 @@ import { db } from '@/lib/db'
 export default async function PinjamPage() {
   const roomId = await requireSession()
 
-  const roomResult = await db.execute({
-    sql: 'SELECT person_one, person_two FROM rooms WHERE id = ?',
-    args: [roomId],
-  })
+  const [roomResult, loansResult] = await Promise.all([
+    db.execute({
+      sql: 'SELECT person_one, person_two FROM rooms WHERE id = ?',
+      args: [roomId],
+    }),
+    db.execute({
+      sql: `
+        SELECT id, borrower, amount, purpose, remaining_amount, status, created_at
+        FROM loans
+        WHERE room_id = ?
+        ORDER BY created_at DESC
+      `,
+      args: [roomId],
+    }),
+  ])
 
   const room = roomResult.rows[0]
-
-  const loansResult = await db.execute({
-    sql: `
-      SELECT *
-      FROM loans
-      WHERE room_id = ?
-      ORDER BY created_at DESC
-    `,
-    args: [roomId],
-  })
 
   return (
     <MobileContainer>

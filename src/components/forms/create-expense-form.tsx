@@ -3,18 +3,23 @@
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { createExpenseAction } from '@/actions/expense.actions'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="h-12 w-full rounded-2xl bg-pink-500 px-4 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
-    >
-      {pending ? 'Menyimpan...' : 'Simpan Pengeluaran 🛍️'}
-    </button>
+    <>
+      {pending && <LoadingOverlay text="Menyimpan pengeluaran 🛍️" />}
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="h-12 w-full rounded-2xl bg-pink-500 px-4 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
+      >
+        {pending ? 'Menyimpan...' : 'Simpan Pengeluaran 🛍️'}
+      </button>
+    </>
   )
 }
 

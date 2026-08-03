@@ -29,40 +29,44 @@ export async function payInstallmentAction(formData: FormData) {
 
   const remaining = Number(loan.remaining_amount) - amount
 
-  await db.execute({
-    sql: `
-      UPDATE loans
-      SET remaining_amount = ?,
-          status = ?
-      WHERE id = ?
-    `,
-    args: [
-      remaining > 0 ? remaining : 0,
-      remaining > 0 ? 'active' : 'paid',
-      loanId,
+  await db.batch(
+    [
+      {
+        sql: `
+          UPDATE loans
+          SET remaining_amount = ?,
+              status = ?
+          WHERE id = ?
+        `,
+        args: [
+          remaining > 0 ? remaining : 0,
+          remaining > 0 ? 'active' : 'paid',
+          loanId,
+        ],
+      },
+      {
+        sql: `
+          INSERT INTO transactions (
+            room_id,
+            type,
+            person,
+            amount,
+            note,
+            related_loan_id
+          )
+          VALUES (?, 'loan_repayment', ?, ?, ?, ?)
+        `,
+        args: [
+          roomId,
+          String(loan.borrower),
+          amount,
+          `Cicilan pinjaman #${loanId}`,
+          loanId,
+        ],
+      },
     ],
-  })
-
-  await db.execute({
-    sql: `
-      INSERT INTO transactions (
-        room_id,
-        type,
-        person,
-        amount,
-        note,
-        related_loan_id
-      )
-      VALUES (?, 'loan_repayment', ?, ?, ?, ?)
-    `,
-    args: [
-      roomId,
-      String(loan.borrower),
-      amount,
-      `Cicilan pinjaman #${loanId}`,
-      loanId,
-    ],
-  })
+    'write',
+  )
 
   revalidatePath('/dashboard')
   revalidatePath('/dashboard/cicilan')
